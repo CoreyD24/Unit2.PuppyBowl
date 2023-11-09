@@ -20,6 +20,7 @@ const getAllPlayers = async() => {
         const response = await data.json();
         state.allPlayers = response.data;
         renderAllPlayers(state.allPlayers.players)
+        //renderPlayerDetails();
     } catch (error) {
         console.log(error)
     };
@@ -27,15 +28,39 @@ const getAllPlayers = async() => {
 
 getAllPlayers()
 
+//triggering event listener adds all breeds, not the one selected.
+const renderPlayerDetails = () => {
+    //retrieves breed, status, and image URL
+    const breeds = state.allPlayers.players.map((singlePlayer) => {
+        return `<li id=${singlePlayer.id}> ${singlePlayer.breed}</li>`
+    })
+    const main = document.querySelector(`main`)
+    const listedBreed = document.createElement('ul')
+    main.replaceChildren(listedBreed);
+    listedBreed.innerHTML = breeds.join(` `);
+}
 
-//plan to put all names on main page in list format appended to h2 
+
+//plan to put all names on main page in list format appended to newly created UL
 const renderAllPlayers = () => {
     const playerNames = state.allPlayers.players.map((singlePlayer) => {
         return `<li id=${singlePlayer.id}>${singlePlayer.name}</li>`
     });
     const main = document.querySelector(`main`);
-    main.innerHTML= playerNames.join(` `);
+    const listedNames = document.createElement(`ul`)
+    main.appendChild(listedNames);
+    listedNames.innerHTML= playerNames.join(` `);
     
+    //adding click event listeners to each name item in a list
+    const eachName = document.querySelectorAll(`li`);
+    eachName.forEach((event) => {
+        event.addEventListener (`click`, (event) => {
+            //runs function to recall details
+            renderPlayerDetails()
+            console.log(`clicked`);
+            
+        })
+    })
 };
 
 
