@@ -8,7 +8,7 @@
 //varibale to shorten API URL usage
 const apiBaseURL = `https://fsa-puppy-bowl.herokuapp.com/api/2310-FSA-ET-WEB-SF/players`
 const main = document.querySelector(`main`);
-
+    
 const state = {
     allPlayers: [],
 };
@@ -41,20 +41,20 @@ const getPlayerDetails = async(id) => {
 
 //adds breed, status, and image on blank main
 const renderPlayerDetails = (breedDetails) => {
-   const html = `
-   <h2>${breedDetails.name}</h2>
-   <h3>Breed: ${breedDetails.breed}</h3>
-   <h4>Status: ${breedDetails.status.toUpperCase()}</h4>
-   <h4>Team: ${breedDetails.team.name}</h4>
-   <button>Go Back</button>
-   <br><br>
-   <img src="${breedDetails.imageUrl}">`;
-   main.innerHTML = html
+    const html = `
+    <h2 style="text-shadow: 1px 1px 4px grey">${breedDetails.name}</h2>
+    <h3>Breed: ${breedDetails.breed}</h3>
+    <h4>Status: ${breedDetails.status.toUpperCase()}</h4>
+    <h4>Team: ${breedDetails.team.name}</h4>
+    <button>Go Back</button>
+    <br><br>
+    <img src="${breedDetails.imageUrl}" style="max-width:500px; max-height: 500px">`;
+    main.innerHTML = html
 
-   const goBackButton = document.querySelector(`button`)
-   goBackButton.addEventListener(`click`, (event) => {
+    const goBackButton = document.querySelector(`button`)
+    goBackButton.addEventListener(`click`, (event) => {
         renderAllPlayers();
-   })
+    })
 };
 
 
@@ -65,18 +65,46 @@ const renderAllPlayers = () => {
         return `<li id=${singlePlayer.id}>${singlePlayer.name}</li>`
     });
     const html = `
+
     <h2>Select A Puppy Player</h2>
-    ${playerNames.join(``)} `
-    main.innerHTML= html;
+    ${playerNames.join(``)} 
+    <br>
+    <form>Enter Player Details to Add to Team</form>
+    <input id=name type="text" name=name placeholder=Stella> Name</input>
+    <br>
+    <input id=breed type="text" name=breed placeholder=Australian-Cattle-Dog/Blue-Tick-Mix> Breed</input>
+    <br>
+    <input id=imgurl type="url" name=image placeholder=https://dog.ceo/api/breeds/image/random> Image URL</input>
+    <br>
+    <input id=imgfile type="file" name=file></input>
+    <br>
+    <input id=submit type="submit" name=submit></input>`
     
+    main.innerHTML= html;
+
     //adding click event listeners to each name item in a list
     const eachName = document.querySelectorAll(`li`);
     eachName.forEach((event) => {
+        event.setAttribute(`style`, `font-size: 20px; font-family: 'Courier New', Courier, monospace;`)
+        event.addEventListener (`mousemove`, () => {
+            event.style.fontSize = (`x-large`);
+            event.style.fontWeight = (`bold`)
+        })
+        event.addEventListener (`mouseout`, () => {
+            event.style.fontSize = (`20px`)
+            event.style.fontWeight = (`normal`);
+        })
         event.addEventListener (`click`, (event) => {
             //runs function to recall details
             getPlayerDetails(event.target.id)
         })
+        
     })
+    const submit = document.getElementById(`submit`);
+    submit.addEventListener (`click`, (event) => {
+            event.preventDefault();
+            alert(`Your Submission Has Been Received`)
+        });
 };
 
 getAllPlayers();
