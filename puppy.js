@@ -33,7 +33,6 @@ const getPlayerDetails = async(id) => {
     const data = await fetch (`${apiBaseURL}/${id}`);
     const response = await data.json();
     const playerDetails = response.data
-    console.log(playerDetails.player)
     renderPlayerDetails(playerDetails.player);
 };
 
@@ -42,14 +41,28 @@ const getPlayerDetails = async(id) => {
 //adds breed, status, and image on blank main
 const renderPlayerDetails = (breedDetails) => {
     const html = `
-    <h2 style="text-shadow: 1px 1px 4px grey">${breedDetails.name}</h2>
+    <h2 style="font-size: xx-large; text-shadow: 1px 1px 4px grey">${breedDetails.name}</h2>
     <h3>Breed: ${breedDetails.breed}</h3>
     <h4>Status: ${breedDetails.status.toUpperCase()}</h4>
     <h4>Team: ${breedDetails.team.name}</h4>
     <button>Go Back</button>
     <br><br>
-    <img src="${breedDetails.imageUrl}" style="max-width:500px; max-height: 500px">`;
+    <img id="image" src="${breedDetails.imageUrl}" style="max-width:800px; max-height: 800px; cursor: zoom-in;">`;
     main.innerHTML = html
+
+
+    const image = document.getElementById(`image`)
+    image.addEventListener(`click`, (event) =>{
+        zoomIn();
+    })
+    
+    const zoomIn = () => {
+        const currWidth = image.clientWidth
+        image.style.width = (currWidth+300+`px`)
+        const currHeight = image.clientHeight
+        image.style.height = (currHeight+300+`px`)
+    }
+
 
     const goBackButton = document.querySelector(`button`)
     goBackButton.addEventListener(`click`, (event) => {
@@ -87,12 +100,13 @@ const renderAllPlayers = () => {
     eachName.forEach((event) => {
         event.setAttribute(`style`, `font-size: 20px; font-family: 'Courier New', Courier, monospace;`)
         event.addEventListener (`mousemove`, () => {
-            event.style.fontSize = (`x-large`);
+            event.style.cursor = (`pointer`)
+            event.style.fontSize = (`x-large`)
             event.style.fontWeight = (`bold`)
         })
         event.addEventListener (`mouseout`, () => {
             event.style.fontSize = (`20px`)
-            event.style.fontWeight = (`normal`);
+            event.style.fontWeight = (`normal`)
         })
         event.addEventListener (`click`, (event) => {
             //runs function to recall details
