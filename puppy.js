@@ -19,7 +19,6 @@ const getAllPlayers = async() => {
         const data = await fetch (apiBaseURL);
         const response = await data.json();
         state.allPlayers = response.data;
-        //console.log(state.allPlayers.players)
         renderAllPlayers(state.allPlayers.players)
     } catch (error) {
         console.log(error)
@@ -38,7 +37,7 @@ const renderAllPlayers = () => {
     main.innerHTML= playerNames.join(` `);
     
 };
-renderAllPlayers()
+
 
 
 
