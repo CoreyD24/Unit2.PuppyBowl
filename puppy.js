@@ -7,6 +7,7 @@
 
 //varibale to shorten API URL usage
 const apiBaseURL = `https://fsa-puppy-bowl.herokuapp.com/api/2310-FSA-ET-WEB-SF/players`
+const main = document.querySelector(`main`);
 
 const state = {
     allPlayers: [],
@@ -25,24 +26,36 @@ const getAllPlayers = async() => {
     };
 };
 
-getAllPlayers()
+
 
 //triggering event listener, retrieves all breeds, not the one selected.
 const getPlayerDetails = async(id) => {
     const data = await fetch (`${apiBaseURL}/${id}`);
     const response = await data.json();
-    console.log(response.data);
-}
-getPlayerDetails();
+    const playerDetails = response.data
+    console.log(playerDetails.player)
+    renderPlayerDetails(playerDetails.player);
+};
+
 
 
 //adds breed, status, and image on blank main
-const renderPlayerDetails = () => {
-    const main = document.querySelector(`main`)
-    const listedBreed = document.createElement('ul')
-    main.replaceChildren(listedBreed);
-    listedBreed.innerHTML = breeds;
+const renderPlayerDetails = (breedDetails) => {
+   const html = `
+   <h2>${breedDetails.name}</h2>
+   <h3>Breed: ${breedDetails.breed}</h3>
+   <h4>Status: ${breedDetails.status.toUpperCase()}</h4>
+   <button>Go Back</button>
+   <br><br>
+   <img src="${breedDetails.imageUrl}">`;
+   main.innerHTML = html
+
+   const goBackButton = document.querySelector(`button`)
+   goBackButton.addEventListener(`click`, (event) => {
+        renderAllPlayers();
+   })
 };
+
 
 
 //plan to put all names on main page in list format appended to newly created UL
@@ -50,22 +63,20 @@ const renderAllPlayers = () => {
     const playerNames = state.allPlayers.players.map((singlePlayer) => {
         return `<li id=${singlePlayer.id}>${singlePlayer.name}</li>`
     });
-    const main = document.querySelector(`main`);
-    const listedNames = document.createElement(`ul`)
-    main.appendChild(listedNames);
-    listedNames.innerHTML= playerNames.join(` `);
+    const html = `
+    <h2>Select A Puppy Player</h2>
+    ${playerNames.join(``)} `
+    main.innerHTML= html;
     
     //adding click event listeners to each name item in a list
     const eachName = document.querySelectorAll(`li`);
     eachName.forEach((event) => {
         event.addEventListener (`click`, (event) => {
-
             //runs function to recall details
             getPlayerDetails(event.target.id)
         })
     })
 };
 
-
-
+getAllPlayers();
 
