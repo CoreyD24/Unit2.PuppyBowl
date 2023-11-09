@@ -20,7 +20,6 @@ const getAllPlayers = async() => {
         const response = await data.json();
         state.allPlayers = response.data;
         renderAllPlayers(state.allPlayers.players)
-        //renderPlayerDetails();
     } catch (error) {
         console.log(error)
     };
@@ -28,17 +27,22 @@ const getAllPlayers = async() => {
 
 getAllPlayers()
 
-//triggering event listener adds all breeds, not the one selected.
+//triggering event listener, retrieves all breeds, not the one selected.
+const getPlayerDetails = async(id) => {
+    const data = await fetch (`${apiBaseURL}/${id}`);
+    const response = await data.json();
+    console.log(response.data);
+}
+getPlayerDetails();
+
+
+//adds breed, status, and image on blank main
 const renderPlayerDetails = () => {
-    //retrieves breed, status, and image URL
-    const breeds = state.allPlayers.players.map((singlePlayer) => {
-        return `<li id=${singlePlayer.id}> ${singlePlayer.breed}</li>`
-    })
     const main = document.querySelector(`main`)
     const listedBreed = document.createElement('ul')
     main.replaceChildren(listedBreed);
-    listedBreed.innerHTML = breeds.join(` `);
-}
+    listedBreed.innerHTML = breeds;
+};
 
 
 //plan to put all names on main page in list format appended to newly created UL
@@ -55,14 +59,12 @@ const renderAllPlayers = () => {
     const eachName = document.querySelectorAll(`li`);
     eachName.forEach((event) => {
         event.addEventListener (`click`, (event) => {
+
             //runs function to recall details
-            renderPlayerDetails()
-            console.log(`clicked`);
-            
+            getPlayerDetails(event.target.id)
         })
     })
 };
-
 
 
 
