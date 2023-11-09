@@ -45,6 +45,7 @@ const renderPlayerDetails = (breedDetails) => {
    <h2>${breedDetails.name}</h2>
    <h3>Breed: ${breedDetails.breed}</h3>
    <h4>Status: ${breedDetails.status.toUpperCase()}</h4>
+   <h4>Team: ${breedDetails.team.name}</h4>
    <button>Go Back</button>
    <br><br>
    <img src="${breedDetails.imageUrl}">`;
